@@ -1,0 +1,251 @@
+components:
+  schemas:
+    data.Movie:
+      properties:
+        genres:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        id:
+          type: integer
+        runtime:
+          example: "0"
+          type: string
+        title:
+          type: string
+        version:
+          type: integer
+        year:
+          type: integer
+      type: object
+    data.MovieList:
+      properties:
+        movies:
+          items:
+            $ref: '#/components/schemas/data.Movie'
+          type: array
+          uniqueItems: false
+      type: object
+    main.envStruct:
+      properties:
+        built_sha:
+          type: string
+        status:
+          type: string
+        system_info:
+          $ref: '#/components/schemas/main.systemInfo'
+      type: object
+    main.envWithEnvelop:
+      properties:
+        env:
+          $ref: '#/components/schemas/main.envStruct'
+      type: object
+    main.systemInfo:
+      properties:
+        env:
+          type: string
+        version:
+          type: string
+      type: object
+externalDocs:
+  description: ""
+  url: ""
+info:
+  contact:
+    email: yang.lyu@hotmail.com
+    name: API Support
+    url: https://github.com/yanglyu520
+  description: This is a Movies Web API.
+  termsOfService: http://swagger.io/terms/
+  title: Movies Web API
+  version: "1.0"
+openapi: 3.1.0
+paths:
+  /v1/healthcheck:
+    get:
+      description: |-
+        Returns a healthcheck response including the Git SHA that was
+        used to build the current binary. This does not use the HASH env
+        variable but rather the binary debug symbols.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.envWithEnvelop'
+          description: OK
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      summary: Healthcheck
+      tags:
+      - healthcheck
+  /v1/movies:
+    get:
+      description: Get a list of movies
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data.MovieList'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      summary: Get a list of movies
+      tags:
+      - movies
+    post:
+      description: Create a new movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data.Movie'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      summary: Create a new movie
+      tags:
+      - movies
+  /v1/movies/id:
+    delete:
+      description: Delete a specific movie
+      parameters:
+      - description: movie ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data.Movie'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      summary: Delete a specific movie
+      tags:
+      - movies
+    get:
+      description: Get  a specific movie
+      parameters:
+      - description: movie ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data.Movie'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      summary: Get a specific movie
+      tags:
+      - movies
+    put:
+      description: Update a specific movie
+      parameters:
+      - description: movie ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data.Movie'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      summary: Update a specific movie
+      tags:
+      - movies
+servers:
+- description: API server behind the api docs
+  url: /
