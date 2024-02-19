@@ -1,0 +1,162 @@
+run:
+  timeout: 5m
+  skip-dirs:
+    - vendor
+    - localstack
+
+build-tags:
+  - integration
+  - localstack
+
+linters:
+  # Ensure all linters remain in the order shown in https://golangci-lint.run/usage/linters/
+  disable-all: true
+  enable:
+    # ENABLED BY DEFAULT
+    - errcheck  # checking for unchecked errors in Go code
+    - gosimple # specializes in simplifying code
+    - govet  # reports suspicious constructs
+    - ineffassign  # detects when assignments to existing variables are not used.
+    - staticcheck  # static code analysis
+    - unused  # unused constants, variables, functions and types
+
+    # CUSTOM ENABLED
+    - asciicheck  # check that your code does not contain non-ASCII identifiers
+    - bidichk  # checks for dangerous unicode character sequences
+    - bodyclose  # checks whether HTTP response body is closed successfully
+    - gocheckcompilerdirectives  # checks that go compiler directive comments (//go:) are valid
+    - gochecknoinits  # checks that no init functions are present in Go code
+    - gci  # controls Go package import order and makes it always deterministic
+    - gofmt  # checks whether code was gofmt-ed
+    - gofumpt  # checks whether code was gofumpt-ed
+    - misspell  # finds commonly misspelled English words in comments
+    - rowserrcheck  # checks whether Err of rows is checked successfully
+    - sqlclosecheck  # checks that sql.Rows and sql.Stmt are closed
+    - tenv  # detects use of os.Setenv in tests
+
+    # DISABLED
+    # - goimports # replaced by GCI
+
+    # TO ENABLE - these should be enabled as soon as possible
+    # - gosec  # checks for security problems in source code (not dependencies)
+    # - wrapcheck  # checks that errors returned from external packages are wrapped
+    # - errname  # checks that sentinel errors are prefixed with Err and error types are suffixed with Error
+    # - errchkjson  # checks types passed to the json encoding functions
+
+    # TO ASSESS - exhaustive list of all linters not assessed (can be enabled if desired)
+    # - containedctx
+    # - contextcheck
+    # - cyclop
+    # - deadcode
+    # - decorder
+    # - depguard
+    # - dogsled
+    # - dupl
+    # - dupword
+    # - durationcheck
+    # - errchkjson
+    # - errorlint
+    # - execinquery
+    # - exhaustive
+    # - exhaustivestruct
+    # - exhaustruct
+    # - exportloopref
+    # - forcetypeassert
+    # - funlen
+    # - ginkgolinter
+    # - gochecknoglobals
+    #
+    # - gocognit
+    # - goconst
+    # - gocritic
+    # - gocyclo
+    # - godot
+    # - godox
+    # - goerr113
+    # - goheader
+    # - golint
+    # - gomnd
+    # - gomoddirectives
+    # - gomodguard
+    # - goprintffuncname
+    # - gosmopolitan
+    # - grouper
+    # - ifshort
+    # - importas
+    # - interfacebloat
+    # - interfacer
+    # - ireturn
+    # - lll
+    # - loggercheck
+    # - maintidx
+    # - makezero
+    # - maligned
+    # - mirror
+    # - musttag
+    # - nakedret
+    # - nestif
+    # - nilerr
+    # - nilnil
+    # - nlreturn
+    # - noctx
+    # - nolintlint
+    # - nonamedreturn
+    # - nosnakecase
+    # - nosprintfhostport
+    # - paralleltest
+    # - prealloc
+    # - predeclared
+    # - promlinter
+    # - reassign
+    # - revive
+    # - scopelint
+    # - structcheck
+    # - stylecheck
+    # - tagalign
+    # - tagliatelle
+    # - testableexamples
+    # - testpackage
+    # - thelper
+    # - tparallel
+    # - unconvert
+    # - unparam
+    # - usestdlibvars
+    # - varcheck
+    # - varnamelen
+    # - wastedassign
+    # - whitespace
+    # - wsl
+    # - zerologlint
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: false
+    # To disable the errcheck built-in exclude list.
+    # See `-excludeonly` option in https://github.com/kisielk/errcheck#excluding-functions for details.
+    # Default: false
+    disable-default-exclusions: false
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/KablamoOSS)
+      - prefix(github.com/NSWRFS)
+      - dot
+    skip-generated: true
+    custom-order: true
+  gofmt:
+    simplify: true
+    rewrite-rules:
+      - pattern: 'interface{}'
+        replacement: any
+      - pattern: a[b:len(a)]
+        replacement: a[b:]
+  gofumpt:
+    extra-rules: false
+  misspell:
+    locale: UK
+    ignore-words:
+      - color
+  staticcheck:
+    checks: ["*"]
